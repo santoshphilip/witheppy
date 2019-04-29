@@ -1,3 +1,33 @@
+2019-04-28
+----------
+notes from eppy
+
+
+how to retain the sequence of the original file when saving.
+
+- sequence number on read.
+- data structure for sequence number.
+- 1. {objkey:[1,2,4,5], objkey:[3,6]}
+    - do a separate read for this ??
+    - insert into the original read
+another data structure
+    - 2. [(objkey, Name), (objkey, Name)] -> some objkey do not have names :-(
+using data structure 1.
+    - use a decorator to read the sequence from the original read.
+        - set it up so that it has to be triggered
+        - so, sunction will work as before if not triggered
+    - send the sequence by 0mq to another thread
+    - once the read is complete insert the sequence into the IDF structure (not the EPlusInterface structure)
+    - have a special write to keep sequence.
+analysis of the EPlusInterface read
+    - The read of the idf happens in:
+    - EPlusInterfaceFunctions.eplusdata.Idd.initdict(self, fname)
+        - it is a simple string functions
+        - do an unit test on this to ensure that te read is a expcted
+        - make a copy of this read to get this sequence
+
+
+
 list of TODOs that come up while coding.
 
 - continuous testing should install Energyplus to idf.run()
