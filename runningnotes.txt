@@ -25,6 +25,15 @@ analysis of the EPlusInterface read
         - it is a simple string functions
         - do an unit test on this to ensure that te read is a expcted
         - make a copy of this read to get this sequence
+in witheppy
+    - write a function that will generate the sequence
+    - insert the sequence into IDF datastructure
+    - save with the sequence
+    - consolidate into a single function
+        - read sequence
+        - do standard read
+        - push sequence number into bunch -> may have side effects.
+
 
 
 

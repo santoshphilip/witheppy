@@ -12,6 +12,44 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 
-def simpleidfread(fname):
+def removecomment(astr, cphrase):
+    """
+    the comment is similar to that in python.
+    any charachter after the # is treated as a comment
+    until the end of the line
+    astr is the string to be de-commented
+    cphrase is the comment phrase"""
+    # linesep = mylib3.getlinesep(astr)
+    alist = astr.splitlines()
+    for i in range(len(alist)):
+        alist1 = alist[i].split(cphrase)
+        alist[i] = alist1[0]
+
+    # return string.join(alist, linesep)
+    return '\n'.join(alist)
+
+def simpleidfread(fhandle):
     """read the idf file by usning string functions to get the data out."""
-    pass
+    astr = fhandle.read()
+    nocom = removecomment(astr, '!')
+    idfst = nocom
+    alist = idfst.split(';')
+    lss = []
+    for element in alist:
+        lst = element.split(',')
+        lss.append(lst)
+
+    for i in range(0, len(lss)):
+        for j in range(0, len(lss[i])):
+            lss[i][j] = lss[i][j].strip()
+
+    dt = {}
+    dtls = []
+    for element in lss:
+        if element[0] == '':
+            continue
+        dt[element[0].upper()] = []
+        dtls.append(element[0].upper())
+
+    return dt, dtls
+
