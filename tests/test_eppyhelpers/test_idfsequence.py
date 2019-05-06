@@ -16,12 +16,23 @@ from witheppy.eppyhelpers import idfsequence
 
 def test_simpleidfread():
     """py.test for simpleidfread"""
-    tdata = (("version, 9.0.1;", {"VERSION":[1]}), # fstring, expected
+    tdata = (
+    ("version, 9.0.1;", {"VERSION":[0]}), # fstring, expected
+    ("""Timestep,4;
+    version, 9.0.1;""", 
+    {"VERSION":[1], "TIMESTEP":[0]}), # fstring, expected
+    ("""version, 9.0.1;
+    Timestep,4;
+    Timestep,5;
+    """, 
+    {"VERSION":[0], "TIMESTEP":[1, 2]}), # fstring, expected
+    ("""Timestep,5;
+    version, 9.0.1;
+    Timestep,4;
+    """, 
+    {"VERSION":[1], "TIMESTEP":[0, 2]}), # fstring, expected
     )
     for fstring, expected in tdata:
         fhandle = StringIO(fstring)
         result = idfsequence.simpleidfread(fhandle)
-        # assert result == None
-        # assert result == expected
-        print(result)
-        result[0].keys() == ["VERSION",]
+        assert result == expected

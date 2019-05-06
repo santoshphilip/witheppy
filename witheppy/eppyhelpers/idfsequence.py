@@ -33,23 +33,18 @@ def simpleidfread(fhandle):
     astr = fhandle.read()
     nocom = removecomment(astr, '!')
     idfst = nocom
+    scount = 0
     alist = idfst.split(';')
     lss = []
+    sdt = {}
     for element in alist:
         lst = element.split(',')
         lss.append(lst)
-
-    for i in range(0, len(lss)):
-        for j in range(0, len(lss[i])):
-            lss[i][j] = lss[i][j].strip()
-
-    dt = {}
-    dtls = []
-    for element in lss:
-        if element[0] == '':
+        key = lst[0].strip().upper()
+        if not key:
             continue
-        dt[element[0].upper()] = []
-        dtls.append(element[0].upper())
-
-    return dt, dtls
+        sdt.setdefault(key, [])
+        sdt[key].append(scount)
+        scount += 1
+    return sdt
 
