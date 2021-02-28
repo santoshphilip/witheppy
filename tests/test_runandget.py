@@ -813,30 +813,6 @@ def test_runandget(tmp_path, subdir, getdict, json_it, compress_it, expected):
     assert reverse_result == expected
 
 
-def test_run():
-    """just run"""
-    idf = AN_IDF
-    idf1 = makeidf()
-    idf2 = makeidf()
-    idf3 = makeidf()
-    import multiprocessing
-    jobs = []
-    p1 = multiprocessing.Process(target=idf.run())
-    p2 = multiprocessing.Process(target=idf1.run())
-    p3 = multiprocessing.Process(target=idf2.run())
-    p4 = multiprocessing.Process(target=idf3.run())
-    jobs.append(p1)
-    jobs.append(p2)
-    jobs.append(p3)
-    jobs.append(p4)
-    p1.start()
-    p2.start()
-    p3.start()
-    p4.start()
-    
-    # idf.run() and idf1.run() in two threads to ensure they run together
-    # assert False
-
 @pytest.mark.parametrize(
     "idf, getdict, json_it, compress_it, expected",
     [

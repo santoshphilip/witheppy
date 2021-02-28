@@ -14,6 +14,7 @@
 # - data in file does not exist
 # - attempting json for binary data - htm and sqlite
 
+import os
 from pathlib import Path
 import collections
 import tempfile
@@ -380,15 +381,16 @@ def runandget(idf, runoptions, getdict, json_it=False, compress_it=False):
     """run the idf and return the results"""
     # idf.run(**runoptions)
     # idf.run() does not allow simultaeous runs. -> using runIDFs
-    idfversion = idf.idfobjects["version"][0].Version_Identifier.split(".")
-    idfversion.extend([0] * (3 - len(idfversion)))
-    idfversionstr = "-".join([str(item) for item in idfversion])
-    runoptions["ep_version"] = idfversionstr
-    #
-    runs = []
-    runs.append([idf, runoptions])
-    num_CPUs = 1
-    runIDFs(runs, num_CPUs)
+    # idfversion = idf.idfobjects["version"][0].Version_Identifier.split(".")
+    # idfversion.extend([0] * (3 - len(idfversion)))
+    # idfversionstr = "-".join([str(item) for item in idfversion])
+    # runoptions["ep_version"] = idfversionstr
+    # #
+    # runs = []
+    # runs.append([idf, runoptions])
+    # num_CPUs = 1
+    # runIDFs(runs, num_CPUs)
+    runidf(idf, runoptions)
     return getrun(runoptions, getdict, json_it, compress_it)
 
 
