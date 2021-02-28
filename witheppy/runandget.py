@@ -377,7 +377,9 @@ def getcsvcols(fhandle, col_list):
         yield outrow
 
 
-def runandget(idf, runoptions, getdict, json_it=False, compress_it=False, runintempdir=True):
+def runandget(
+    idf, runoptions, getdict, json_it=False, compress_it=False, runintempdir=True
+):
     """run the idf and return the results
     Do not use with multi-threading. Gets confused on which directory it is in.
         May pick up dir from another thread
@@ -385,7 +387,7 @@ def runandget(idf, runoptions, getdict, json_it=False, compress_it=False, runint
     if not runintempdir:
         # in case you want to run in a known dir (usually where your script is)
         idf.run(**runoptions)
-        idf.run() does not allow simultaeous runs. -> using runIDFs
+        # idf.run() does not allow simultaeous runs. -> using runIDFs
         idfversion = idf.idfobjects["version"][0].Version_Identifier.split(".")
         idfversion.extend([0] * (3 - len(idfversion)))
         idfversionstr = "-".join([str(item) for item in idfversion])
@@ -411,7 +413,7 @@ def runidf(idf, runoptions):
     idfversion.extend([0] * (3 - len(idfversion)))
     idfversionstr = "-".join([str(item) for item in idfversion])
     runoptions["ep_version"] = idfversionstr
-    
+
     origdir = os.path.abspath(os.curdir)
     try:
         with tempfile.TemporaryDirectory() as directory_name:
@@ -421,6 +423,7 @@ def runidf(idf, runoptions):
         raise e
     finally:
         os.chdir(origdir)
+
 
 def anon_runandget(idf, getdict, json_it=False, compress_it=False):
     """run the idf in a temp library and return results"""

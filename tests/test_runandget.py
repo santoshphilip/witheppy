@@ -37,7 +37,7 @@ def makeidf():
     fname1 = os.path.join(IDF_FILES, TEST_IDF)
     modeleditor.IDF.setiddname(iddfile, testing=True)
     # =========
-    
+
     idf = modeleditor.IDF(fname1, TEST_EPW)
     # put a expidf object in.
     idf.newidfobject(
