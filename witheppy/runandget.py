@@ -377,24 +377,35 @@ def getcsvcols(fhandle, col_list):
         yield outrow
 
 
-def runandget(idf, runoptions, getdict, json_it=False, compress_it=False):
-    """run the idf and return the results"""
-    # idf.run(**runoptions)
-    # idf.run() does not allow simultaeous runs. -> using runIDFs
-    # idfversion = idf.idfobjects["version"][0].Version_Identifier.split(".")
-    # idfversion.extend([0] * (3 - len(idfversion)))
-    # idfversionstr = "-".join([str(item) for item in idfversion])
-    # runoptions["ep_version"] = idfversionstr
-    # #
-    # runs = []
-    # runs.append([idf, runoptions])
-    # num_CPUs = 1
-    # runIDFs(runs, num_CPUs)
-    runidf(idf, runoptions)
+def runandget(idf, runoptions, getdict, json_it=False, compress_it=False, runintempdir=True):
+    """run the idf and return the results
+    Do not use with multi-threading. Gets confused on which directory it is in.
+        May pick up dir from another thread
+    Works fine with multiprocessing"""
+    if not runintempdir:
+        # in case you want to run in a known dir (usually where your script is)
+        idf.run(**runoptions)
+        idf.run() does not allow simultaeous runs. -> using runIDFs
+        idfversion = idf.idfobjects["version"][0].Version_Identifier.split(".")
+        idfversion.extend([0] * (3 - len(idfversion)))
+        idfversionstr = "-".join([str(item) for item in idfversion])
+        runoptions["ep_version"] = idfversionstr
+        #
+        runs = []
+        runs.append([idf, runoptions])
+        num_CPUs = 1
+        runIDFs(runs, num_CPUs)
+    else:
+        # will run in a tempdir that will dissappear
+        # since this is runandget, you don't care
+        runidf(idf, runoptions)
     return getrun(runoptions, getdict, json_it, compress_it)
 
 
 def runidf(idf, runoptions):
+    """does the run in a temporary dir
+    Do not use with multi-threading. Gets confused on which directory it is in
+    Works fine with multiprocessing"""
     # ep_version = "-".join(str(x) for x in idd_version[:3])
     idfversion = idf.idfobjects["version"][0].Version_Identifier.split(".")
     idfversion.extend([0] * (3 - len(idfversion)))
