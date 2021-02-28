@@ -392,6 +392,23 @@ def runandget(idf, runoptions, getdict, json_it=False, compress_it=False):
     return getrun(runoptions, getdict, json_it, compress_it)
 
 
+def runidf(idf, runoptions):
+    # ep_version = "-".join(str(x) for x in idd_version[:3])
+    idfversion = idf.idfobjects["version"][0].Version_Identifier.split(".")
+    idfversion.extend([0] * (3 - len(idfversion)))
+    idfversionstr = "-".join([str(item) for item in idfversion])
+    runoptions["ep_version"] = idfversionstr
+    
+    origdir = os.path.abspath(os.curdir)
+    try:
+        with tempfile.TemporaryDirectory() as directory_name:
+            os.chdir(directory_name)
+            idf.run(**runoptions)
+    except Exception as e:
+        raise e
+    finally:
+        os.chdir(origdir)
+
 def anon_runandget(idf, getdict, json_it=False, compress_it=False):
     """run the idf in a temp library and return results"""
     with tempfile.TemporaryDirectory() as tmp_dir:
