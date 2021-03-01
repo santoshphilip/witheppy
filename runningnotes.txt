@@ -1,3 +1,11 @@
+2021-02-28
+----------
+
+- TODO do numpy style comments on runandget()
+- explain that runintempdir=False is just in case you need to debug.
+- then do the pull request
+- publish to pypi
+
 2021-01-20
 ----------
 
